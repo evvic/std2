@@ -21,13 +21,13 @@ $(BUILD_DIR):
 memory: configure
 	@cd $(BUILD_DIR) && cmake --build . --target memory memory_tests
 	@if [ "$(UNITTEST)" = "true" ]; then \
-		cd $(BUILD_DIR) && ctest --output-on-failure -R "UniquePointerTest"; \
+		cd $(BUILD_DIR) && GTEST_OUTPUT=xml:test-results/ GTEST_COLOR=1 ctest --output-on-failure -V -R "UniquePointerTest"; \
 	fi
 
 vector: configure
 	@cd $(BUILD_DIR) && cmake --build . --target vector vector_tests
 	@if [ "$(UNITTEST)" = "true" ]; then \
-		cd $(BUILD_DIR) && ctest --output-on-failure -R "VectorTest"; \
+		cd $(BUILD_DIR) && GTEST_OUTPUT=xml:test-results/ GTEST_COLOR=1 ctest --output-on-failure -V -R "VectorTest"; \
 	fi
 
 std2: configure
