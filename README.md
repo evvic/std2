@@ -15,6 +15,15 @@ make memory
 ```
 - The flag `-DCMAKE_CXX_COMPILER=g++-14` should not be needed
 
+# Creating a release
+- Triggering the workflow to build and publish a release requires a `git tag` push
+- Create and push a tag:
+```bash
+git tag -a v1.0.0 -m "First release version"
+git push origin --tags
+```
+> Note the tag version must be higher than the current tag
+
 # Run with main to test
 ```bash
 ./test_memory

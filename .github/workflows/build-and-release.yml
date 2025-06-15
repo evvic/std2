@@ -3,7 +3,7 @@ name: Build and Release SO
 on:
   push:
     tags:
-      - '*.*.*'
+      - 'v*.*.*'
 
 jobs:
   build:
