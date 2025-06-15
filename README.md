@@ -1,11 +1,17 @@
 # std2
-Implantation of C++ containers with modern C++23
+My implementation of C++ containers with modern C++23
 
-# Build the library
+# Project structure
+Each typical C++ std library (i.e. vector, queue, etc...) has it's own directory under the project root directory
+
+# Building the libraries
+- At the root level, use the make commands to build all libraries
 ```bash
-cd build
-cmake .. -G Ninja
-ninja
+make all
+```
+- or choose certain targets to build:
+```bash
+make memory
 ```
 - The flag `-DCMAKE_CXX_COMPILER=g++-14` should not be needed
 
