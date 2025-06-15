@@ -25,9 +25,9 @@ memory: configure
 	fi
 
 vector: configure
-	@cd $(BUILD_DIR) && cmake --build . --target vector
+	@cd $(BUILD_DIR) && cmake --build . --target vector vector_tests
 	@if [ "$(UNITTEST)" = "true" ]; then \
-		cd $(BUILD_DIR) && ctest --output-on-failure -R "^vector"; \
+		cd $(BUILD_DIR) && ctest --output-on-failure -R "VectorTest"; \
 	fi
 
 std2: configure

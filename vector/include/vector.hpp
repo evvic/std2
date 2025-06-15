@@ -2,10 +2,12 @@
 #define VECTOR_HPP
 
 #include <cstddef>  // for std::size_t - utility library
-#include "std2.hpp" // for std2::move, std2::forward
+#include "../../std2/std2.hpp" // for std2::move, std2::forward
+
+namespace std2 {
 
 template <typename T>
-class vector{
+class vector {
 public:
     // TODO: provide allocator felxibility
     vector() {
@@ -85,8 +87,10 @@ private:
     }
 
     T* m_data = nullptr;
-    std::size_t m_size;
-    std::size_t m_capacity;
-}
+    std::size_t m_size = 0;
+    std::size_t m_capacity = 0;
+};
 
-#endif VECTOR_HPP
+} // namespace std2
+
+#endif // VECTOR_HPP

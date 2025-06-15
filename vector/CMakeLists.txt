@@ -17,10 +17,10 @@ add_executable(vector_tests
     tests/vector_test.cpp
 )
 
-# Link against gtest and memory library
+# Link against gtest
 target_link_libraries(vector_tests
     PRIVATE
-        memory
+        vector
         GTest::gtest_main
         GTest::gmock_main
 )
@@ -30,4 +30,4 @@ include(GoogleTest)
 gtest_discover_tests(vector_tests)
 
 # Set C++23 standard for this target
-target_compile_features(vector INTERFACE cxx_std_23)
+# target_compile_features(vector INTERFACE cxx_std_23)

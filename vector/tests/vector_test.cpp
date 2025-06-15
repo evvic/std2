@@ -21,11 +21,6 @@ TEST_F(VectorTest, BasicConstructionAndDestruction) {
     vals.push_back(20);
     vals.push_back(30);
     EXPECT_EQ(vals.size(), 3);
-
-    // Test constructor with pointer
-    std2::unique_ptr<int> ptr2(new int(42));
-    EXPECT_NE(ptr2.get(), nullptr);
-    EXPECT_EQ(*ptr2, 42);
 }
 
 // Test push_back and size
