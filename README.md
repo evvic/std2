@@ -34,17 +34,20 @@ You can run tests in several ways:
 ```bash
 make unittest
 ```
+- Is **not** verbose with output
 
 2. Run tests for a specific module:
 ```bash
 make memory UNITTEST=true   # Run memory module tests only
 make vector UNITTEST=true   # Run vector module tests only
 ```
+- Automatically is verbose with messages and any `cout`s
 
 3. Run all tests:
 ```bash
 make all UNITTEST=true
 ```
+- Automatically is verbose with messages and any `cout`s
 
 ## Test Structure
 Each module follows this test structure:
