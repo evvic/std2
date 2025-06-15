@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10...3.31 FATAL_ERROR)
 
 # Include directories
 include_directories(
@@ -6,8 +6,28 @@ include_directories(
     ${CMAKE_SOURCE_DIR}
 )
 
-# Add the library
+# Create library target
 add_library(memory SHARED src/unique_ptr.cpp)
+
+# Create test directory
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+
+# Add the test executable
+add_executable(memory_tests
+    tests/unique_ptr_test.cpp
+)
+
+# Link against gtest and memory library
+target_link_libraries(memory_tests
+    PRIVATE
+        memory
+        GTest::gtest_main
+        GTest::gmock_main
+)
+
+# Register tests with CTest
+include(GoogleTest)
+gtest_discover_tests(memory_tests)
 
 # Add the executable for testing
 # add_executable(test_memory tests/main.cpp)

@@ -4,6 +4,9 @@
 # CmakeLists build directory
 build/
 
+# GTest Testing directory
+Testing/
+
 # Compiled Object files
 *.slo
 *.lo

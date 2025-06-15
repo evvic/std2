@@ -3,6 +3,8 @@
 
 #include "../../std2/std2.hpp"
 
+namespace std2 {
+
 // Custom implementation of default_delete
 template <typename T>
 struct default_delete {
@@ -38,8 +40,8 @@ public:
      *  @return a new unique_ptr that takes ownership of the other unique_ptr.
      */
     constexpr unique_ptr(unique_ptr&& other) noexcept 
-        : ptr_(bbp::exchange(other.ptr_, nullptr)),
-        deleter_(bbp::move(other.deleter_))
+        : ptr_(std2::exchange(other.ptr_, nullptr)),
+        deleter_(std2::move(other.deleter_))
     {}
 
     /**
@@ -51,8 +53,8 @@ public:
     {
         if (this != &other) {
             reset();
-            this->ptr_ = bbp::exchange(other.ptr_, nullptr);
-            deleter_ = bbp::move(other.deleter_);
+            this->ptr_ = std2::exchange(other.ptr_, nullptr);
+            deleter_ = std2::move(other.deleter_);
         }
         return *this;
     }
@@ -103,7 +105,7 @@ private:
     Deleter deleter_;
 };
 
-namespace bbp {
+
 
 /**
  *  @brief  Custom implementation of make_unique - create a unique_ptr.
@@ -112,9 +114,9 @@ namespace bbp {
 */
 template <typename T, typename... Args>
 unique_ptr<T> make_unique(Args&&... args) {
-    return unique_ptr<T>(new T(bbp::forward<Args>(args)...));
+    return unique_ptr<T>(new T(std2::forward<Args>(args)...));
 }
 
-} // namespace bbp
+} // namespace std2
 
 #endif // UNIQUE_POINTER_HPP
