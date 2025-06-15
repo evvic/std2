@@ -114,17 +114,99 @@ TEST_F(VectorTest, PushBackAndSize) {
     points.push_back(Point3D());
 
     print_vector(points);
-
-
 }
 
 // Test push_back and size
+TEST_F(VectorTest, EmplaceBackAndSize) {
+
+    std2::vector<int> vals;
+    vals.emplace_back(10);
+    vals.emplace_back(20);
+    vals.emplace_back(30);
+    print_vector(vals);
+    EXPECT_EQ(vals.size(), 3);
+
+    std2::vector<Point3D> points;
+
+    points.emplace_back(1.0f, 2.0f, 3.0f);
+    points.emplace_back(1.0f);
+    points.emplace_back();
+
+    print_vector(points);
+}
+
+// Test [] operator accessing elements
 TEST_F(VectorTest, IndexOperator) {
 
     std2::vector<int> vals;
     vals.push_back(10);
 
+    std::cout << "Replacing element at index 0 from " << 10 << " to " << 20 << std::endl;
+    print_vector(vals);
+
     EXPECT_EQ(vals[0], 10);
+
+    // Update an element
+    vals[0] = 20;
+
+    print_vector(vals);
+
+    EXPECT_EQ(vals[0], 20);
+
+    std2::vector<Point3D> points;
+    
+    // Add a point
+    points.push_back(Point3D(1.0f, 2.0f, 3.0f));
+    std::cout << "Initial vector: ";
+    print_vector(points);
+    
+    // Get reference and modify
+    Point3D& point_ref = points[0];
+    point_ref.x = 10.0f;
+    std::cout << "After modifying through reference: ";
+    print_vector(points);
+    EXPECT_EQ(points[0].x, 10.0f);
+    
+    // Direct assignment through operator[]
+    points[0] = Point3D(20.0f, 20.0f, 20.0f);
+    std::cout << "After direct assignment: ";
+    print_vector(points);
+    EXPECT_EQ(points[0].x, 20.0f);
+    
+    // Test const access
+    const std2::vector<Point3D>& const_points = points;
+    EXPECT_EQ(const_points[0].x, 20.0f);
+    // Following line would not compile (good!):
+    // const_points[0] = Point3D(); // Error: assignment of read-only location
 }
 
+// Test clear
+TEST_F(VectorTest, Clear) {
 
+    std2::vector<int> vals;
+    vals.push_back(10);
+    vals.push_back(10);
+    vals.push_back(10);
+
+    EXPECT_EQ(vals.size(), 3);
+
+    vals.clear();
+
+    EXPECT_EQ(vals.size(), 0);
+}
+
+// Test pop_back
+TEST_F(VectorTest, PopBack) {
+
+    std2::vector<int> vals;
+    vals.push_back(10);
+    vals.push_back(10);
+    vals.push_back(10);
+
+    EXPECT_EQ(vals.size(), 3);
+
+    vals.pop_back();
+    vals.pop_back();
+
+    EXPECT_EQ(vals.size(), 1);
+}
