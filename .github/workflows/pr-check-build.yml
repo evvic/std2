@@ -1,0 +1,35 @@
+name: Build and Run Tests
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up CMake
+      uses: jwlawson/actions-setup-cmake@v1
+
+    - name: Install dependencies
+      run: sudo apt install -y g++-14 ninja-build
+
+    - name : Set g++-14 as default
+      run: sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 90
+
+    - name: Create build directory
+      run: mkdir -p build
+
+    - name: Configure CMake
+      run: |
+        cd build
+        cmake .. -G Ninja
+
+    - name: Build
+      run: |
+        cd build
+        ninja
+
