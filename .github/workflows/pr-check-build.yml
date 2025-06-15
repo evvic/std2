@@ -20,16 +20,10 @@ jobs:
     - name : Set g++-14 as default
       run: sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 90
 
-    - name: Create build directory
-      run: mkdir -p build
+    - name: Clean build environment
+      run: make clean
 
-    - name: Configure CMake
+    - name: Build all targets
       run: |
-        cd build
-        cmake .. -G Ninja
-
-    - name: Build
-      run: |
-        cd build
-        ninja
+        make all
 
