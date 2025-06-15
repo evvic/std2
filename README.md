@@ -37,8 +37,8 @@ make unittest
 
 2. Run tests for a specific module:
 ```bash
-make memory TEST=true   # Run memory module tests only
-make vector TEST=true   # Run vector module tests only
+make memory UNITTEST=true   # Run memory module tests only
+make vector UNITTEST=true   # Run vector module tests only
 ```
 
 3. Run all tests:
