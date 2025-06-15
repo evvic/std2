@@ -24,10 +24,44 @@ git push origin --tags
 ```
 > Note the tag version must be higher than the current tag
 
-# Run with main to test
+# Unit testing
+This project uses Google Test framework for unit testing. Each module (memory, vector, etc.) has its own test suite in its `tests/` directory.
+
+## Running tests
+You can run tests in several ways:
+
+1. Run all tests without rebuilding:
 ```bash
-./test_memory
+make unittest
 ```
+
+2. Run tests for a specific module:
+```bash
+make memory TEST=true   # Run memory module tests only
+make vector TEST=true   # Run vector module tests only
+```
+
+3. Run all tests:
+```bash
+make all UNITTEST=true
+```
+
+## Test Structure
+Each module follows this test structure:
+- Basic functionality tests
+- Edge case tests
+- Move semantics tests (for modern C++ features)
+- Custom behavior tests (e.g., custom deleters)
+- Performance benchmarks
+
+## Adding New Tests
+1. Create test files in the module's `tests/` directory
+2. Name test files as `<component>_test.cpp`
+3. Use Google Test macros for assertions:
+   - `EXPECT_EQ()` for equality
+   - `EXPECT_NE()` for inequality
+   - `EXPECT_TRUE()` for boolean conditions
+   - `EXPECT_THROW()` for exception testing
 
 # C++23 Setup
 
