@@ -20,6 +20,69 @@ public:
     }
 
     /**
+     *  @brief  Set the capacity of the vector.
+     *  @param  new_capacity The new capacity for the vector.
+     *  @return void.
+     */
+    void reserve(const std::size_t new_capacity) {
+        // reserve only affects capacity not size
+        // therefore a reserving an amount smaller than size will be ignored
+
+        if (new_capacity > m_capacity) {
+            reallocate(new_capacity);
+        }
+    }
+
+    /**
+     *  @brief  Set the size of the vector.
+     *  @param  new_size The new size for the vector.
+     *  @return void.
+     */
+    void resize(const std::size_t new_size) {
+        // resize affects size and capacity
+        // therefore a resizing an amount smaller than size will shrink the vector
+
+        // reserve more space if needed
+        if (new_size > m_capacity) reallocate(new_size);
+
+        // shrink if needed
+        for (std::size_t i = new_size; i < m_size; ++i) {
+            m_data[i].~T(); // call destructor explicitly
+        }
+
+        // if growing, initialize new elements with default constructor
+        for (std::size_t i = m_size; i < new_size; ++i) {
+            new (&m_data[i]) T();
+        }
+        
+        m_size = new_size;
+    }
+
+    /**
+     *  @brief  Set the size of the vector.
+     *  @param  new_size The new size for the vector.
+     *  @param  val The value to initialize new elements with.
+     *  @return void.
+     */
+    void resize(const std::size_t new_size, const T& val) {
+
+        // reserve more space if needed
+        if (new_size > m_capacity) reallocate(new_size);
+
+        // shrink if needed
+        for (std::size_t i = new_size; i < m_size; ++i) {
+            m_data[i].~T(); // call destructor explicitly
+        }
+
+        // if growing, initialize new elements with val
+        for (std::size_t i = m_size; i < new_size; ++i) {
+            new (&m_data[i]) T(val);
+        }
+        
+        m_size = new_size;
+    }
+
+    /**
      *  @brief  Add an element to the end of the vector.
      *  @param  value  The value to add to the end of the vector.
      *  @return void.
@@ -120,6 +183,8 @@ private:
      * @return void.
      */
     void reallocate(std::size_t new_capacity) {
+
+        // reserc
 
         // TODO: handle reallocation for shrinking
         if (new_capacity <= m_size) {

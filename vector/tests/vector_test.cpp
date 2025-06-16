@@ -210,3 +210,59 @@ TEST_F(VectorTest, PopBack) {
 
     EXPECT_EQ(vals.size(), 1);
 }
+
+TEST_F(VectorTest, ReserveTest) {
+    std2::vector<Point3D> points;
+    
+    // Add 100 points
+    for(int i = 0; i < 100; i++) {
+        points.push_back(Point3D(i, i, i));
+    }
+    
+    std::cout << "Before reserve: size=" << points.size() << std::endl;
+              
+    points.reserve(50);
+    
+    std::cout << "After reserve(50): size=" << points.size() << std::endl;
+
+    EXPECT_EQ(points.size(), 100);
+}
+
+TEST_F(VectorTest, ResizeTest) {
+    std2::vector<Point3D> points;
+    
+    // First reserve space for 200
+    points.reserve(200);
+    
+    // Add 100 points
+    for(int i = 0; i < 100; i++) {
+        points.push_back(Point3D(i, i, i));
+    }
+    
+    std::cout << "Initial state: size=" << points.size() << std::endl;
+              
+    // Now resize to 50
+    points.resize(50);
+    
+    std::cout << "After resize(50): size=" << points.size() << std::endl;
+
+    // Now resize to 100
+    points.resize(100, Point3D(1.0f, 1.0f, 1.0f));
+    
+    std::cout << "After resize(100): size=" << points.size() << std::endl;
+
+}
+
+TEST_F(VectorTest, ResizeWithValue) {
+    std2::vector<Point3D> points;
+    
+    // Resize to 3 elements, all with value (1,1,1)
+    points.resize(3, Point3D(1.0f));
+    
+    EXPECT_EQ(points.size(), 3);
+    for(size_t i = 0; i < points.size(); ++i) {
+        EXPECT_EQ(points[i].x, 1.0f);
+        EXPECT_EQ(points[i].y, 1.0f);
+        EXPECT_EQ(points[i].z, 1.0f);
+    }
+}
