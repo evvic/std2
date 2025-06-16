@@ -15,6 +15,7 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 # Add the test executable
 add_executable(vector_tests
     tests/vector_test.cpp
+    tests/vector_allocator_test.cpp
 )
 
 # Link against gtest

@@ -27,7 +27,7 @@ memory: configure
 vector: configure
 	@cd $(BUILD_DIR) && cmake --build . --target vector vector_tests
 	@if [ "$(UNITTEST)" = "true" ]; then \
-		cd $(BUILD_DIR) && GTEST_OUTPUT=xml:test-results/ GTEST_COLOR=1 ctest --output-on-failure -V -R "VectorTest"; \
+		cd $(BUILD_DIR) && GTEST_OUTPUT=xml:test-results/ GTEST_COLOR=1 ctest --output-on-failure -V -R "VectorTest|AllocatorTest"; \
 	fi
 
 std2: configure

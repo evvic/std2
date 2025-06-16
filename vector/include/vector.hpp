@@ -6,17 +6,21 @@
 
 namespace std2 {
 
-template <typename T>
+template <typename T, typename Allocator = std::allocator<T>>
 class vector {
 public:
-    // TODO: provide allocator felxibility
-    vector() {
-        // allocate memory in cosntructor
-        reallocate(4); // initial capacity of 2
+
+    vector() : m_alloc(Allocator()) {
+        reallocate(INITIAL_CAPACITY);
+    }
+
+    explicit vector(const Allocator& alloc) : m_alloc(alloc) {
+        reallocate(INITIAL_CAPACITY);
     }
 
     ~vector() {
-        delete[] m_data; // free memory in destructor
+        // delete[] m_data; // free memory in destructor
+        m_alloc.deallocate(m_data, m_capacity);
     }
 
     /**
@@ -89,7 +93,7 @@ public:
      */
     void push_back(const T& value) {
         if (m_size >= m_capacity) {
-            reallocate(m_capacity * 2); // double the capacity - TODO: use an allcoater to be dynamic
+            reallocate(m_capacity * GROWTH_FACTOR); // double the capacity - TODO: use an allcoater to be dynamic
         }
 
         // add element to the end of the vector
@@ -104,7 +108,7 @@ public:
      */
     void push_back(T&& value) {
         if (m_size >= m_capacity) {
-            reallocate(m_capacity * 2); // double the capacity - TODO: use an allcoater to be dynamic
+            reallocate(m_capacity * GROWTH_FACTOR); // double the capacity - TODO: use an allcoater to be dynamic
         }
 
         // add element to the end of the vector
@@ -120,7 +124,7 @@ public:
     template <typename... Args> //variadic template
     T& emplace_back(Args&&... args) {
         if (m_size >= m_capacity) {
-            reallocate(m_capacity * 2); // double the capacity - TODO: use an allcoater to be dynamic
+            reallocate(m_capacity * GROWTH_FACTOR); // double the capacity - TODO: use an allcoater to be dynamic
         }
 
         // add element to the end of the vector
@@ -192,14 +196,14 @@ private:
         }
 
         // allocate a new block of heap memory
-        T* new_block = new T[new_capacity];
+        T* new_block = m_alloc.allocate(new_capacity);
 
         for (std::size_t i = 0; i < m_size; ++i) {
             new_block[i] = std2::move(m_data[i]);
-            // new_block[i] = m_data[i];
         }
 
-        delete[] m_data; // free old memory block
+        // delete[] m_data; // free old memory block
+        m_alloc.deallocate(m_data, m_capacity);
         m_data = new_block;
         m_capacity = new_capacity;
     }
@@ -207,6 +211,10 @@ private:
     T* m_data = nullptr;
     std::size_t m_size = 0;
     std::size_t m_capacity = 0;
+    Allocator m_alloc;
+
+    const std::size_t INITIAL_CAPACITY = 4;
+    const std::size_t GROWTH_FACTOR = 2;
 };
 
 } // namespace std2
