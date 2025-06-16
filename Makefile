@@ -36,11 +36,11 @@ std2: configure
 		cd $(BUILD_DIR) && ctest --output-on-failure -R "^std2"; \
 	fi
 
-# Run all tests explicitly
-unittest: configure
-	@cd $(BUILD_DIR) && \
-	cmake --build . --target memory_tests && \
-	ctest --output-on-failure
+# Run all unit tests explicitly
+unittest: all
+	@cd $(BUILD_DIR) && cmake .. -DUNITTEST=true
+	@cd $(BUILD_DIR) && cmake --build . --target memory_tests vector_tests
+	@cd $(BUILD_DIR) && ctest --output-on-failure
 
 # Clean target
 clean:
