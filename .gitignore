@@ -4,6 +4,9 @@
 # CmakeLists build directory
 build/
 
+# Microsoft garabge
+packages.microsoft.gpg
+
 # GTest Testing directory
 Testing/
 
