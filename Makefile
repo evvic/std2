@@ -3,7 +3,7 @@
 BUILD_DIR = build
 UNITTEST ?= false
 
-.PHONY: all clean memory vector std2 unittest configure
+.PHONY: all clean memory vector list std2 unittest configure
 
 # Help target - lists available commands
 help:
@@ -11,6 +11,7 @@ help:
 	@echo "  make all      - Build all targets"
 	@echo "  make memory   - Build memory component and run its tests"
 	@echo "  make vector   - Build vector component and run its tests"
+	@echo "  make list     - Build list component and run its tests"
 	@echo "  make std2     - Build core std2 library"
 	@echo "  make unittest - Build and run all unit tests"
 	@echo "  make clean    - Remove build directory"
@@ -46,6 +47,12 @@ vector: configure
 		cd $(BUILD_DIR) && GTEST_OUTPUT=xml:test-results/ GTEST_COLOR=1 ctest --output-on-failure -V -R "VectorTest|AllocatorTest"; \
 	fi
 
+list: configure
+	@cd $(BUILD_DIR) && cmake --build . --target list list_tests
+	@if [ "$(UNITTEST)" = "true" ]; then \
+		cd $(BUILD_DIR) && GTEST_OUTPUT=xml:test-results/ GTEST_COLOR=1 ctest --output-on-failure -V -R "ListTest"; \
+	fi
+
 std2: configure
 	@cd $(BUILD_DIR) && cmake --build . --target std2
 	@if [ "$(UNITTEST)" = "true" ]; then \
@@ -55,7 +62,7 @@ std2: configure
 # Run all unit tests explicitly
 unittest: all
 	@cd $(BUILD_DIR) && cmake .. -DUNITTEST=true
-	@cd $(BUILD_DIR) && cmake --build . --target memory_tests vector_tests
+	@cd $(BUILD_DIR) && cmake --build . --target memory_tests vector_tests vector_tests
 	@cd $(BUILD_DIR) && ctest --output-on-failure
 
 # Clean target
