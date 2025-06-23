@@ -3,6 +3,7 @@
 
 #include "../../std2/std2.hpp" // for std2::move, std2::forward
 #include "../../memory/memory.hpp" // for std2::unique_ptr
+#include <iostream>
 
 namespace std2 {
 
@@ -12,17 +13,22 @@ namespace std2 {
         struct Node;      // Forward declaration of Node
         struct iterator;  // Forward declaration of iterator
 
-        list() {
-            m_head = nullptr;
-            m_tail = nullptr;
-            m_size = 0;
+        list() = default;
+
+        list(std::initializer_list<T> init) : list() {
+            for (const auto& value : init) {
+                push_back(value);
+            }
+        }
+
+        list(std::size_t count, const T& value) : list() {
+            for (std::size_t i = 0; i < count; ++i) {
+                push_back(value);
+            }
         }
 
         ~list() {
-            iterator it = begin();
-            // while (it.m_node) {
-
-            // }
+            while (m_head) pop_front();
         }
 
         iterator begin() {
@@ -59,18 +65,43 @@ namespace std2 {
         }
 
         iterator erase(iterator& it) {
-            
+            if (!it.m_node) return end();
+
+            Node* node = it.m_node;
+
+            if (node->prev) node->prev->next = node->next;
+            else m_head = node->next;
+            if (node->next) node->next->prev = node->prev;
+            else m_tail = node->prev;
+
+            delete node;
+            --m_size;
+            it = iterator(node->next);
+            return  it;
         }
 
         void pop_back() {
-
+            if (m_tail) {
+                Node* node = m_tail;
+                m_tail = m_tail->prev;
+                if (m_tail) m_tail->next = nullptr;
+                else m_tail = nullptr;
+                delete node;
+                --m_size; 
+            }
         }
 
         void pop_front() {
-
+            if (m_head) {
+                Node* node = m_head;
+                m_head = m_head->next;
+                if (m_head) m_head->prev = nullptr;
+                else m_head = nullptr;
+                delete node;
+                --m_size;
+            }
         }
 
-        
         std::size_t size() {
             return m_size;
         }
@@ -86,12 +117,12 @@ namespace std2 {
         public:
             explicit iterator(Node* node) : m_node(node) {}
             T& operator*() const { return m_node->data; }
-            // pre-incrementer: incrments this and returns current value
+            // pre-incrementer: increments this and returns current value
             iterator& operator++() {
                 if(m_node) m_node = m_node->next;
                 return *this;
             }
-            // post-incrementer: incrments this and returns the un-incremented value
+            // post-incrementer: increments this and returns the un-incremented value
             iterator operator++(int) {
                 iterator temp = *this;
                 if(m_node) m_node = m_node->next;
@@ -127,8 +158,6 @@ namespace std2 {
         Node* m_tail = nullptr;
         std::size_t m_size = 0;
     };
-
-
 }
 
 #endif // LIST_HPP
